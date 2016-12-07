@@ -95,6 +95,14 @@ function runDots() {
             echo ""
             ./android.sh
         fi
+        if [ $ARG == "picnichealth" ] || [ $ARG == "all" ]; then
+            # Run the picnichealth.sh Script
+            echo "------------------------------"
+            echo "Setting up PicnicHealth development environment."
+            echo "------------------------------"
+            echo ""
+            ./picnichealth.sh
+        fi
     done
 
     echo "------------------------------"

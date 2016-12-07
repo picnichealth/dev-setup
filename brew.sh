@@ -21,10 +21,14 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade --all
 
+PROFILE_PATH = ~/.profile
+
 # Install GNU core utilities (those that come with OS X are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install coreutils
 sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
+
+echo "export PATH=$PATH:$(brew --prefix coreutils)/libexec/gnubin" >> $PROFILE_PATH
 
 # Install some other useful utilities like `sponge`.
 brew install moreutils
@@ -32,6 +36,8 @@ brew install moreutils
 brew install findutils
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
+# Install git
+brew install git
 # Install Bash 4.
 brew install bash
 brew tap homebrew/versions
@@ -40,8 +46,15 @@ brew install bash-completion2
 echo "Adding the newly installed shell to the list of allowed shells"
 # Prompts for password
 sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+# Install zsh
+brew install zsh
+# Install oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# Read bash profile at end of zsh setup
+echo "source $BASH_PROFILE_PATH" >> ~/.zshrc
+
 # Change to the new shell, prompts for password
-chsh -s /usr/local/bin/bash
+chsh -s $(which zsh)
 
 # Install `wget` with IRI support.
 brew install wget --with-iri
@@ -69,6 +82,14 @@ brew install homebrew/dupes/openssh
 brew install homebrew/dupes/screen
 brew install homebrew/php/php55 --with-gmp
 
+# Install emacs
+brew install emacs --with-cocoa --with-gnutls --with-x11 --with-imagemagick
+brew linkapps emacs
+brew install ctags
+
+# Install spacemacs
+git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+
 # Install font tools.
 brew tap bramstein/webfonttools
 brew install sfnt2woff
@@ -76,36 +97,35 @@ brew install sfnt2woff-zopfli
 brew install woff2
 
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
-brew install aircrack-ng
-brew install bfg
+# brew install aircrack-ng
+# brew install bfg
 brew install binutils
-brew install binwalk
-brew install cifer
-brew install dex2jar
-brew install dns2tcp
-brew install fcrackzip
-brew install foremost
-brew install hashpump
-brew install hydra
-brew install john
-brew install knock
-brew install netpbm
+# brew install binwalk
+# brew install cifer
+# brew install dex2jar
+# brew install dns2tcp
+# brew install fcrackzip
+# brew install foremost
+# brew install hashpump
+# brew install hydra
+# brew install john
+# brew install knock
+# brew install netpbm
 brew install nmap
-brew install pngcheck
-brew install socat
-brew install sqlmap
-brew install tcpflow
-brew install tcpreplay
-brew install tcptrace
-brew install ucspi-tcp # `tcpserver` etc.
+# brew install pngcheck
+# brew install socat
+# brew install sqlmap
+# brew install tcpflow
+# brew install tcpreplay
+# brew install tcptrace
+# brew install ucspi-tcp # `tcpserver` etc.
 brew install homebrew/x11/xpdf
-brew install xz
+# brew install xz
 
 # Install other useful binaries.
 brew install ack
 brew install dark-mode
 #brew install exiv2
-brew install git
 brew install git-lfs
 brew install git-flow
 brew install git-extras
@@ -133,8 +153,8 @@ brew link libxml2 --force
 brew link libxslt --force
 
 # Install Heroku
-brew install heroku-toolbelt
-heroku update
+# brew install heroku-toolbelt
+# heroku update
 
 # Install Cask
 brew install caskroom/cask/brew-cask
@@ -147,29 +167,42 @@ brew cask install --appdir="~/Applications" java
 brew cask install --appdir="~/Applications" xquartz
 
 # Development tool casks
-brew cask install --appdir="/Applications" sublime-text
-brew cask install --appdir="/Applications" atom
-brew cask install --appdir="/Applications" virtualbox
-brew cask install --appdir="/Applications" vagrant
-brew cask install --appdir="/Applications" macdown
+# brew cask install --appdir="/Applications" sublime-text
+# brew cask install --appdir="/Applications" atom
+# brew cask install --appdir="/Applications" virtualbox
+# brew cask install --appdir="/Applications" vagrant
+# brew cask install --appdir="/Applications" macdown
 
 # Misc casks
 brew cask install --appdir="/Applications" google-chrome
-brew cask install --appdir="/Applications" firefox
-brew cask install --appdir="/Applications" skype
+# brew cask install --appdir="/Applications" firefox
+# brew cask install --appdir="/Applications" skype
 brew cask install --appdir="/Applications" slack
 brew cask install --appdir="/Applications" dropbox
-brew cask install --appdir="/Applications" evernote
+# brew cask install --appdir="/Applications" evernote
 brew cask install --appdir="/Applications" 1password
 #brew cask install --appdir="/Applications" gimp
 #brew cask install --appdir="/Applications" inkscape
 
-#Remove comment to install LaTeX distribution MacTeX
-#brew cask install --appdir="/Applications" mactex
+brew cask install --appdir="/Applications" mactex
+brew install homebrew/tex/pdfjam
 
-# Install Docker, which requires virtualbox
-brew install docker
-brew install boot2docker
+# Install pdftk
+for i in {1..10}; do echo "-------------------------"; done
+echo "PDFtk currently broken for OS X 10.11! See the first answer to http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11"
+for i in {1..10}; do echo "-------------------------"; done
+
+# Install docker
+brew cask install docker
+
+# Install minikube
+brew cask install minikube
+# Install xhyve for minikube
+brew install docker-machine-driver-xhyve
+
+# docker-machine-driver-xhyve need root owner and uid
+$ sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+$ sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 
 # Install developer friendly quick look plugins; see https://github.com/sindresorhus/quick-look-plugins
 brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package

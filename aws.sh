@@ -94,17 +94,17 @@ echo "Installing IPython Notebook Spark integration"
 # Add the pyspark IPython profile
 cp -r init/profile_pyspark/ ~/.ipython/profile_pyspark
 
-BASH_PROFILE_PATH=~/.bash_profile
-echo $BASH_PROFILE_PATH
-echo "" >> $BASH_PROFILE_PATH
-echo "" >> $BASH_PROFILE_PATH
-echo "# IPython Notebook Spark integration, added by aws.sh" >> $BASH_PROFILE_PATH
+PROFILE_PATH=~/.profile
+echo $PROFILE_PATH
+echo "" >> $PROFILE_PATH
+echo "" >> $PROFILE_PATH
+echo "# IPython Notebook Spark integration, added by aws.sh" >> $PROFILE_PATH
 # Run $ brew info apache-spark to determine the Spark install location
-echo "export SPARK_HOME='/usr/local/Cellar/apache-spark/1.4.1'" >> $BASH_PROFILE_PATH
-echo "# Appending pyspark-shell is needed for Spark 1.4+" >> $BASH_PROFILE_PATH
-echo "export PYSPARK_SUBMIT_ARGS='--master local[2] pyspark-shell'" >> $BASH_PROFILE_PATH
-echo "" >> $BASH_PROFILE_PATH
-source $BASH_PROFILE_PATH
+echo "export SPARK_HOME='/usr/local/Cellar/apache-spark/1.4.1'" >> $PROFILE_PATH
+echo "# Appending pyspark-shell is needed for Spark 1.4+" >> $PROFILE_PATH
+echo "export PYSPARK_SUBMIT_ARGS='--master local[2] pyspark-shell'" >> $PROFILE_PATH
+echo "" >> $PROFILE_PATH
+source $PROFILE_PATH
 
 echo "------------------------------"
 echo "TODO: Update .aws/ with your AWS credentials and region, or run aws --configure."
