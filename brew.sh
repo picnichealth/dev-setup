@@ -50,8 +50,12 @@ sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
 brew install zsh
 # Install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-# Read bash profile at end of zsh setup
-echo "source $BASH_PROFILE_PATH" >> ~/.zshrc
+# Read profile, extrra at end of zsh setup
+echo ""
+echo ""
+echo "source $PROFILE_PATH" >> ~/.zshrc
+echo "source $EXTRA_PATH" >> ~/.zshrc
+echo "plugins=(arcanist brew cask git github osx)"
 
 # Change to the new shell, prompts for password
 chsh -s $(which zsh)
